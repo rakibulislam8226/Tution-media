@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Blog | Search view
+{% endblock title %}
+
+{% block body %}
+<br>
+<h4 style="text-align: center; color:rgb(7, 77, 30)">Search related post's are below.</h4><br>
+
+{% for p in results %}
+<div class="col-md-6 offset-md-3 border">
+  Title: {{p.title}} <br>
+  by: {{user.username}}<br>
+  <hr>
+  <a href="/postdetail/{{p.id}}">...Read more</a>
+</div><br>
+{% endfor %}
+
+
+{% endblock body %}

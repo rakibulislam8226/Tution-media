@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load tag %}
+
+{% block title %}
+Blog | Post detail view
+{% endblock title %}
+
+{% block body %}
+
+<br>
+<h4 style="text-align: center; color:rgb(7, 77, 30)">Requested post detail's are below.</h4><br>
+<div class="col-md-6 offset-md-3 border">
+  Title: {{object.title}} <br>
+  by: <a title="See {{user.username}} profile" href="/userprofile/userprofile/">{{object.user.username}}</a> <br>
+  Email: {{object.email}} <br>
+  Subject= {{object.subject}} <br>
+  Class= {% for c in object.class_in.all %}
+  {{c.name}}
+  {% endfor %} <br>
+  Category={{object.category}} <br>
+  expected Salary= {{object.salary}} <br>
+  Created at = {{object.date_time}} <br>
+  Avaliable = {% if object.avaliable %} Yes {%else%} No {%endif%} <br>
+
+  Submitted Image: <br> <img src="/media/{{post.image}}" alt="">
+  <hr>
+
+  {% if request.user == object.user %}
+  <a href="/postedit/{{object.id}}">Edit</a>
+  <a href="/postdelete/{{object.id}}">Delete</a>
+  {% endif %}
+  <div>
+    <form action="/likepost/{{object.id}}/" method="post">
+      {% csrf_token %}
+      {% if liked %}
+      <button class="btn btn-success" type="submit">Unlike</button>
+      {%else%}
+      <button class="btn btn-success" type="submit">Like</button>
+      {% endif %}
+    </form>
+  </div>
+  <div>
+    Liked {{object.total_likes}}. <br>
+    Views {{object.total_views}}.
+  </div>
+  <div>
+    <form action="/addcomment/" method="post">
+      {% csrf_token %}
+      <div class="form-group"> <br>
+        <label style="color: darkgreen;">Add Comment</label>
+        <input type="text" class="form-control" name="comment" placeholder="Your Comment">
+        <input type="hidden" value="{{object.id}}" name="postid">
+        <input type="hidden" value="" name="parentid">
+      </div>
+      <button type="submit">Add Comment</button><br>
+    </form><br>
+  </div>
+  <div>
+    {% for comment in comments %}
+    <div class="row">
+      <div class="col-md-1">
+        <img src="{{comment.user.userprofile.image.url}}" class="rounded rounded-img-thumbnail" style="width: 45px;"
+          alt="">
+      </div>
+      <div class="col-md-10">
+        <b>{{comment.user.username}}</b>
+        <span class="bedge bedge-secondary">{{comment.created_at}}</span>
+        <div class="">{{comment.text}}</div>
+
+        <!-- model start -->
+        <!-- Button trigger modal -->
+        {% if request.user == object.user or request.user == comment.user %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          Delete
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Are you sure want to delete your comment.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary"><a style="color: white;"
+                    href="/deletecomment/{{comment.id}}/">Delete</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <!-- model end -->
+
+
+        <div class="row">
+          <form action="/addcomment/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label style="color: darkgreen;">Add Reply</label>
+              <input type="text" class="form-control" name="comment" placeholder="Your reply">
+              <input type="hidden" value="{{object.id}}" name="postid">
+              <input type="hidden" value="{{comment.id}}" name="parentid">
+            </div>
+            <button type="submit">Add reply</button><br>
+          </form><br>
+        </div> <br>
+      </div>
+      {% for reply in DictofReply|get_reply:comment.id %}
+      <div class="row">
+        <div class="col-md-2">
+          <img src="{{reply.user.userprofile.image.url}}" class="rounded rounded-img-thumbnail" style="width: 45px;"
+            alt="">
+        </div>
+        <div class="col-md-10">
+          <b>{{reply.user.username}}</b>
+          <span class="bedge bedge-secondary">{{reply.created_at}}</span>
+          <div class="">{{reply.text}}</div> <br>
+
+          <!-- model start -->
+          <!-- Button trigger modal -->
+          {% if request.user == object.user or request.user == reply.user %}
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{reply.id}}">
+            Delete
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal{{reply.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel1">Delete Reply</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Are you sure want to delete your reply.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-secondary"><a style="color: white;"
+                      href="/deletecomment/{{reply.id}}/">Delete</a></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <!-- model end -->
+
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+    {%endfor%}
+
+  </div>
+</div>
+{% endblock body %}

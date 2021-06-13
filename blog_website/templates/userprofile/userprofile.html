@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+Blog | {{user.username}} Profile
+{% endblock title %}
+
+{% block body %}
+<br>
+<h4 style="text-align: center; color:rgb(7, 77, 30)">{{user.username}} Profile</h4><br>
+<div class="col-md-6 offset-md-3 border">
+  
+  <div class="col">
+    <form enctype="multipart/form-data">
+    <br> <img class="rounded-circle" src="{{user.userprofile.image.url}}" alt=""> <br>
+    <br> Name = {{user.username}} <br>
+    Phone = {{user.userprofile.phone}} <br>
+    Email= {{user.userprofile.email}} <br>
+    Gender= {{user.userprofile.gender}} <br>
+    Address= {{user.userprofile.address}} <br>
+    Date of Birth= {{user.userprofile.date_of_birth}} <br>
+    Religion= {{user.userprofile.religion}} <br>
+    Nationality= {{user.userprofile.nationality}} <br>
+    Blood Group= {{user.userprofile.blood_group}} <br>
+    Bio-data = {{user.userprofile.biodata}} <br>
+    Profession = {{user.userprofile.profession}} <br>
+    </form>
+  </div><br>
+  <a href="{%url 'userprofilecreate'%}">Edit Profile</a>
+  
+</div><br>
+{% endblock body %}

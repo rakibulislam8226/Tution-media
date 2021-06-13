@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+Blog | Password reset
+{% endblock title %}
+
+{% block body %}
+<div class="col-md-6 offset-md-3">
+  <form action="" method="post">
+    {% csrf_token %}
+    <br>
+    <h5 style="text-align: center; color:rgb(7, 77, 30)">Enter your email to get password reset link.</h5><br>
+    {{form | crispy}}
+    <button type="submit">Submit</button>
+  </form>
+</div><br>
+{% endblock body %}

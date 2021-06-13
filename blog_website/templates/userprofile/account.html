@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+
+
+{% autoescape off %}
+
+  Congratulation {{user.username}},
+  You have successfully create your account on: http://{{ domain }}
+  If you think you are not {{user.username}} then just ignore this mail.
+  Thank you.
+{% endautoescape %}

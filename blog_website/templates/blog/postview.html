@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Blog | Post view
+{% endblock title %}
+
+{% block body %}
+
+<br>
+<h4 style="text-align: center; color:rgb(7, 77, 30)">All Post's are below.</h4><br>
+
+{% for p in post %}
+<div class="col-md-6 offset-md-3 border">
+  Title: {{p.title}} <br>
+  by: <a title="See {{p.user.username}} profile" href="/userprofile/otherprofile/{{p.user.id}}/">{{p.user.username}}</a>
+  <br>
+  <br><img class="rounded-circle" src="/media/{{p.image}}" alt=""><br>
+  <hr>
+  <a title="To read full details or like & comment, go to inside of this post." href="/postdetail/{{p.id}}">...Read
+    more</a>
+
+</div><br>
+{% endfor %}
+
+
+{% endblock body %}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+Blog | Contact with us
+{% endblock title %}
+
+{% block body %}
+<div class="col-md-6 offset-md-3">
+  <form action="" method="post">
+  <br><h4 style="text-align: center; color:rgb(7, 77, 30)">Contact with us</h4><br>
+  {% csrf_token %}
+  {{form | crispy}}
+  <button type="submit">Submit</button>
+  </form>
+</div><br>
+{% endblock body %}

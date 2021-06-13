@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block title %}
+Blog | Feedback
+{% endblock title %}
+
+{% block body %}
+<div class="col-md-6 offset-md-3">
+  <h2 style="text-align: center; color:rgb(20, 157, 221); ">What is wrong with you?</h2>
+  <div class="container">
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Name</label>
+        <input type="name" class="form-control" id="exampleFormControlInput1" placeholder="Your Name" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Email</label>
+        <input type="email" class="form-control" id="exampleFormControlInput2" placeholder="Your Email" name="email" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Phone</label>
+        <input type="Phone" class="form-control" id="exampleFormControlInput3" placeholder="Phone Number" name="phone" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Complain</label>
+        <textarea class="form-control" id="exampleFormControlTextarea4" rows="3" name="complain"></textarea>
+      </div>
+      <button type="submit">Submit</button>
+    </form> <br>
+  </div>
+</div>
+
+{% endblock body %}
